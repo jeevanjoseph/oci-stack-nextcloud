@@ -56,29 +56,29 @@ variable "mysql_root_password" {
 
 
 variable "wp_db_user" {
-  description = "The username that WordPress uses to connect to the MySQL database."
+  description = "The username that Nextcloud uses to connect to the MySQL database."
   default     = "wp"  
 }
 
 variable "wp_db_password" {
-  description = "Password for WordPress to connect to the MySQL database."
+  description = "Password for Nextcloud to connect to the MySQL database."
   default     = "MyWPpassw0rd!"  
 }
 
 variable "wp_schema" {
-  description = "WordPress MySQL Schema"
-  default     = "wordpress"  
+  description = "Nextcloud MySQL Schema"
+  default     = "nextcloud"  
 }
 
-# WordPress
+# Nextcloud
 
 
 variable "wp_admin_user" {
-  description = "The username for the WordPress administrator."
+  description = "The username for the Nextcloud administrator."
   default     = "admin"  
 }
 
 variable "wp_admin_password" {
-  description = "Password for the WordPress administrator."
+  description = "Password for the Nextcloud administrator."
   #default     = "MyWPpassw0rd!"  
 }

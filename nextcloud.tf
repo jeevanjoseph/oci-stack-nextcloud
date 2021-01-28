@@ -1,6 +1,6 @@
 
-data "template_file" "wordpress-docker-compose" {
-  template = file("${path.module}/scripts/wordpress.yaml")
+data "template_file" "nextcloud-docker-compose" {
+  template = file("${path.module}/scripts/nextcloud.yaml")
 
   vars = {
     public_key_openssh  = tls_private_key.public_private_key_pair.public_key_openssh,
@@ -8,17 +8,17 @@ data "template_file" "wordpress-docker-compose" {
     wp_schema           = var.wp_schema,
     wp_db_user          = var.wp_db_user,
     wp_db_password      = var.wp_db_password,
-    wp_site_url         = oci_core_public_ip.WordPress_public_ip.ip_address,
+    wp_site_url         = oci_core_public_ip.Nextcloud_public_ip.ip_address,
     wp_admin_user          = var.wp_admin_user,
     wp_admin_password      = var.wp_admin_password
   }
 }
 
 
-resource "oci_core_instance" "WordPress" {
+resource "oci_core_instance" "Nextcloud" {
   availability_domain = local.availability_domain_name
   compartment_id      = var.compartment_ocid
-  display_name        = "wordpress"
+  display_name        = "Nextcloud"
   shape               = var.node_shape
 
   create_vnic_details {
@@ -39,37 +39,37 @@ resource "oci_core_instance" "WordPress" {
 
 }
 
-data "oci_core_vnic_attachments" "WordPress_vnics" {
+data "oci_core_vnic_attachments" "Nextcloud_vnics" {
   compartment_id      = var.compartment_ocid
   availability_domain = local.availability_domain_name
-  instance_id         = oci_core_instance.WordPress.id
+  instance_id         = oci_core_instance.Nextcloud.id
 }
 
-data "oci_core_vnic" "WordPress_vnic1" {
-  vnic_id = data.oci_core_vnic_attachments.WordPress_vnics.vnic_attachments[0]["vnic_id"]
+data "oci_core_vnic" "Nextcloud_vnic1" {
+  vnic_id = data.oci_core_vnic_attachments.Nextcloud_vnics.vnic_attachments[0]["vnic_id"]
 }
 
-data "oci_core_private_ips" "WordPress_private_ips1" {
-  vnic_id = data.oci_core_vnic.WordPress_vnic1.id
+data "oci_core_private_ips" "Nextcloud_private_ips1" {
+  vnic_id = data.oci_core_vnic.Nextcloud_vnic1.id
 }
 
-resource "oci_core_public_ip" "WordPress_public_ip" {
+resource "oci_core_public_ip" "Nextcloud_public_ip" {
   compartment_id = var.compartment_ocid
-  display_name   = "WordPress_public_ip"
+  display_name   = "Nextcloud_public_ip"
   lifetime       = "RESERVED"
-  private_ip_id  = data.oci_core_private_ips.WordPress_private_ips1.private_ips[0]["id"]
+  private_ip_id  = data.oci_core_private_ips.Nextcloud_private_ips1.private_ips[0]["id"]
 }
 
-resource "null_resource" "WordPress_provisioner" {
-  depends_on = [oci_core_instance.WordPress, oci_core_public_ip.WordPress_public_ip]
+resource "null_resource" "Nextcloud_provisioner" {
+  depends_on = [oci_core_instance.Nextcloud, oci_core_public_ip.Nextcloud_public_ip]
 
   provisioner "file" {
-    content     = data.template_file.wordpress-docker-compose.rendered
-    destination = "/home/opc/wordpress.yaml"
+    content     = data.template_file.nextcloud-docker-compose.rendered
+    destination = "/home/opc/nextcloud.yaml"
 
     connection {
       type        = "ssh"
-      host        = oci_core_public_ip.WordPress_public_ip.ip_address
+      host        = oci_core_public_ip.Nextcloud_public_ip.ip_address
       agent       = false
       timeout     = "5m"
       user        = "opc"
@@ -81,7 +81,7 @@ resource "null_resource" "WordPress_provisioner" {
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
-      host        = oci_core_public_ip.WordPress_public_ip.ip_address
+      host        = oci_core_public_ip.Nextcloud_public_ip.ip_address
       agent       = false
       timeout     = "5m"
       user        = "opc"
@@ -91,7 +91,7 @@ resource "null_resource" "WordPress_provisioner" {
 
     inline = [
       "while [ ! -f /tmp/cloud-init-complete ]; do sleep 2; done",
-      "docker-compose -f /home/opc/wordpress.yaml up -d"
+      "docker-compose -f /home/opc/nextcloud.yaml up -d"
     ]
 
   }

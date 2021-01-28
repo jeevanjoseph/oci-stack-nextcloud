@@ -2,7 +2,7 @@ resource "oci_core_virtual_network" "wpmdsvcn" {
   cidr_block = var.vcn_cidr
   compartment_id = var.compartment_ocid
   display_name = var.vcn
-  dns_label = "wordpress"
+  dns_label = "nextcloud"
 }
 
 
@@ -15,7 +15,7 @@ resource "oci_core_internet_gateway" "internet_gateway" {
 resource "oci_core_route_table" "public_route_table" {
   compartment_id = var.compartment_ocid
   vcn_id = oci_core_virtual_network.wpmdsvcn.id
-  display_name = "RouteTableForWordPress"
+  display_name = "RouteTableForNextcloud"
   route_rules {
     cidr_block = "0.0.0.0/0"
     network_entity_id = oci_core_internet_gateway.internet_gateway.id
@@ -25,7 +25,7 @@ resource "oci_core_route_table" "public_route_table" {
 
 resource "oci_core_security_list" "public_security_list" {
   compartment_id = var.compartment_ocid
-  display_name = "Allow Public SSH Connections to WordPress"
+  display_name = "Allow Public SSH Connections to Nextcloud"
   vcn_id = oci_core_virtual_network.wpmdsvcn.id
   egress_security_rules {
     destination = "0.0.0.0/0"
@@ -43,7 +43,7 @@ resource "oci_core_security_list" "public_security_list" {
 
 resource "oci_core_security_list" "public_security_list_http" {
   compartment_id = var.compartment_ocid
-  display_name = "Allow HTTP(S) to WordPress"
+  display_name = "Allow HTTP(S) to Nextcloud"
   vcn_id = oci_core_virtual_network.wpmdsvcn.id
   egress_security_rules {
     destination = "0.0.0.0/0"
@@ -69,7 +69,7 @@ resource "oci_core_security_list" "public_security_list_http" {
 
 resource "oci_core_subnet" "public" {
   cidr_block = cidrsubnet(var.vcn_cidr, 8, 0)
-  display_name = "wordpress_public_subnet"
+  display_name = "nextcloud_public_subnet"
   compartment_id = var.compartment_ocid
   vcn_id = oci_core_virtual_network.wpmdsvcn.id
   route_table_id = oci_core_route_table.public_route_table.id

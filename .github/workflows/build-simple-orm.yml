@@ -21,7 +21,7 @@ jobs:
         run: terraform validate
 
       - name: 'Build Stack'
-        run: zip -r wordpress-latest.zip *.tf *.yaml script
+        run: zip -r nextcloud-latest.zip *.tf *.yaml script
       
      
       - name: Create Release
@@ -44,6 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/wordpress-latest.zip
-          asset_name: wordpress-latest.zip
+          asset_path: ${{ github.workspace }}/nextcloud-latest.zip
+          asset_name: nextcloud-latest.zip
           asset_content_type: application/zip

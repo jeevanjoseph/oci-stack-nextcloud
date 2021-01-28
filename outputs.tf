@@ -1,9 +1,9 @@
-output "wordpress_public_ip" {
-  value = "http://${oci_core_public_ip.WordPress_public_ip.ip_address}"
+output "nextcloud_public_ip" {
+  value = "http://${oci_core_public_ip.Nextcloud_public_ip.ip_address}"
 }
 
-output "wordpress_admin_url" {
-  value = "http://${oci_core_public_ip.WordPress_public_ip.ip_address}/wp-admin/"
+output "nextcloud_admin_url" {
+  value = "http://${oci_core_public_ip.Nextcloud_public_ip.ip_address}/wp-admin/"
 }
 
 output "generated_ssh_private_key" {

@@ -1,10 +1,10 @@
-# oci-wordpress-micro
+# oci-nextcloud-micro
 
 ## Prerequisites
 
 - Permission to `manage` the following types of resources in your Oracle Cloud Infrastructure tenancy: `vcns`, `internet-gateways`, `route-tables`, `security-lists`, `subnets` and `instances`.
 
-- Quota to create the following resources: 1 VCN, 1 subnet, 1 Internet Gateway, and 1 compute instance (Wordpress CMS).
+- Quota to create the following resources: 1 VCN, 1 subnet, 1 Internet Gateway, and 1 compute instance (Nextcloud CMS).
 
 If you don't have the required permissions and quota, contact your tenancy administrator. See [Policy Reference](https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Reference/policyreference.htm), [Service Limits](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/servicelimits.htm), [Compartment Quotas](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/resourcequotas.htm).
 
@@ -18,8 +18,8 @@ If you don't have the required permissions and quota, contact your tenancy admin
 Now, you'll want a local copy of this repo. You can make that with the commands:
 
 ```
-    git clone https://github.com/oracle-quickstart/oci-arch-wordpress-mds.git
-    cd oci-arch-wordpress-mds
+    git clone https://github.com/oracle-quickstart/oci-arch-nextcloud-mds.git
+    cd oci-arch-nextcloud-mds
     ls
 ```
 
@@ -52,11 +52,11 @@ Run the following commands:
 
 
 ### Testing your Deployment
-After the deployment is finished, you can access WP-Admin by picking wordpress_wp-admin_url output and pasting into web browser window. You can also verify initial content of your blog by using wordpress_public_ip:
+After the deployment is finished, you can access WP-Admin by picking nextcloud_wp-admin_url output and pasting into web browser window. You can also verify initial content of your blog by using nextcloud_public_ip:
 
 ````
-wordpress_wp-admin_url = http://193.122.198.19/wp-admin/
-wordpress_public_ip = 193.122.198.19
+nextcloud_wp-admin_url = http://193.122.198.19/wp-admin/
+nextcloud_public_ip = 193.122.198.19
 `````
 
 ### Destroy the Deployment
@@ -66,6 +66,6 @@ When you no longer need the deployment, you can run this command to destroy the 
 
 ## Architecture Diagram
 
-![](./images/architecture-deploy-wordpress-mds.png)
+![](./images/architecture-deploy-nextcloud-mds.png)
 
 

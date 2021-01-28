@@ -1,5 +1,5 @@
-title: "Deploy a containerized WordPress instance on OCI"
-description: "Deploy containerized WordPress & MySQL on OCI using a single compute instance. "
+title: "Deploy a containerized Nextcloud instance on OCI"
+description: "Deploy containerized Nextcloud & MySQL on OCI using a single compute instance. "
 schemaVersion: 1.1.0
 version: "20190304"
 locale: "en"
@@ -11,7 +11,7 @@ variableGroups:
   - tenancy_ocid
   - region
 
-- title: WordPress Configuration
+- title: Nextcloud Configuration
   visible: true  
   variables:
     - wp_admin_user
@@ -55,28 +55,28 @@ variableGroups:
 outputGroups:
 - title: Service Endpoints
   outputs:
-    - wordpress_public_ip
-    - wordpress_admin_url
+    - nextcloud_public_ip
+    - nextcloud_admin_url
 - title: Generated Passwords
   outputs:
     - generated_ssh_private_key
 
 outputs:
-  wordpress_public_ip:
+  nextcloud_public_ip:
     type: link
-    title: Your WordPress website
-    description: Open WordPress website
-  wordpress_admin_url:
+    title: Your Nextcloud website
+    description: Open Nextcloud website
+  nextcloud_admin_url:
     type: link
-    title: WordPress Login
-    description: Login to your WordPress installation.
+    title: Nextcloud Login
+    description: Login to your Nextcloud installation.
   generated_ssh_private_key:
     title: "Generated SSH Private Key"
     description: "Generated SSH Private Key"
     type: copyableString
     visible: true
 
-primaryOutputButton: wordpress_admin_url
+primaryOutputButton: nextcloud_admin_url
 
 variables:
 
@@ -101,8 +101,8 @@ variables:
   wp_db_user:
     type: string
     required: false
-    title: "WordPress database username"
-    description: "The username that WordPress uses to connect to the MySQL database."
+    title: "Nextcloud database username"
+    description: "The username that Nextcloud uses to connect to the MySQL database."
     minLength: 2
     maxLength: 14
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
@@ -113,8 +113,8 @@ variables:
   wp_db_password:
     type: password
     required: false
-    title: "WordPress database password"
-    description: "Password for WordPress to connect to the MySQL database."
+    title: "Nextcloud database password"
+    description: "Password for Nextcloud to connect to the MySQL database."
     #pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\\\"\\\\|,.<>\\/?]).{8,32}$"
     visible: 
       and:
@@ -123,8 +123,8 @@ variables:
   wp_schema:
     type: string
     required: false
-    title: "MySQL schema to be used by WordPress"
-    description: "The MySQL Schema/Database for WordPress."
+    title: "MySQL schema to be used by Nextcloud"
+    description: "The MySQL Schema/Database for Nextcloud."
     visible: 
       and:
         - show_advanced
@@ -132,8 +132,8 @@ variables:
   wp_admin_user:
     type: string
     required: true
-    title: "WordPress admin username"
-    description: "The username for the WordPress administrator."
+    title: "Nextcloud admin username"
+    description: "The username for the Nextcloud administrator."
     minLength: 2
     maxLength: 14
     pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
@@ -142,8 +142,8 @@ variables:
   wp_admin_password:
     type: password
     required: true
-    title: "WordPress admin password"
-    description: "The password for the WordPress administrator account."
+    title: "Nextcloud admin password"
+    description: "The password for the Nextcloud administrator account."
     #pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\\\"\\\\|,.<>\\/?]).{8,32}$"
   
 # Network
@@ -154,7 +154,7 @@ variables:
         - show_advanced
     required: true
     title: "VCN name"
-    description: "Type VCN name where your WordPress will be deployed."
+    description: "Type VCN name where your Nextcloud will be deployed."
 
   vcn_cidr:
     type: string
@@ -164,7 +164,7 @@ variables:
     required: false
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "VCN CIDR"
-    description: "Choose VCN CIDR for your WordPress deployment."
+    description: "Choose VCN CIDR for your Nextcloud deployment."
 
 # Instance 
   compartment_ocid:
@@ -174,7 +174,7 @@ variables:
       and:
         - show_advanced
     title: "Compartment"
-    description: "Compartment where your WordPress will be deployed."
+    description: "Compartment where your Nextcloud will be deployed."
 
   availability_domain_name:
     type: oci:identity:availabilitydomain:name
@@ -183,7 +183,7 @@ variables:
       and:
         - show_advanced
     title: "Availability Domain to be chosen"
-    description: "Choose Availability Domain where your WordPress will be deployed."
+    description: "Choose Availability Domain where your Nextcloud will be deployed."
     dependsOn:
       regionName: ${region}
       compartmentId: ${compartment_ocid}
@@ -194,8 +194,8 @@ variables:
     visible: 
       and:
         - show_advanced
-    title: "Wordpress node shape"
-    description: "Choose Instance Shape for WordPress host."
+    title: "Nextcloud node shape"
+    description: "Choose Instance Shape for Nextcloud host."
     default: "VM.Standard2.1"
     dependsOn:
       compartmentId: ${compartment_ocid}
@@ -207,7 +207,7 @@ variables:
       and:
         - show_advanced
     title: "Instance OS"
-    description: "An Operating System that determines the operating system for WordPress host."
+    description: "An Operating System that determines the operating system for Nextcloud host."
     default: "Oracle Linux"
     enum:
       - "Oracle Linux"
@@ -219,7 +219,7 @@ variables:
       and:
         - show_advanced
     title: "Instance OS version"
-    description: "An Operating System version that determines the operating system version for WordPress host."
+    description: "An Operating System version that determines the operating system version for Nextcloud host."
     default: "7.8"
     enum:
       - "7.8"
@@ -228,8 +228,8 @@ variables:
     type: string
     required: false
     visible: false
-    title: "WordPress Hostname Prefix"
-    description: "Type WordPress Hostname Prefix."
+    title: "Nextcloud Hostname Prefix"
+    description: "Type Nextcloud Hostname Prefix."
 
   
 
