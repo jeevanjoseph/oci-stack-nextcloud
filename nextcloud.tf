@@ -7,11 +7,15 @@ data "template_file" "nextcloud-docker-compose" {
     mysql_root_password = var.mysql_root_password,
     wp_schema           = var.wp_schema,
     wp_db_user          = var.wp_db_user,
-    wp_db_password      = var.wp_db_password,
+    nc_db_password      = var.wp_db_password,
     wp_site_url         = oci_core_public_ip.Nextcloud_public_ip.ip_address,
     wp_admin_user          = var.wp_admin_user,
     wp_admin_password      = var.wp_admin_password
   }
+}
+
+data "template_file" "nginx-conf" {
+  template = file("${path.module}/scripts/nginx.conf")
 }
 
 
@@ -66,6 +70,21 @@ resource "null_resource" "Nextcloud_provisioner" {
   provisioner "file" {
     content     = data.template_file.nextcloud-docker-compose.rendered
     destination = "/home/opc/nextcloud.yaml"
+
+    connection {
+      type        = "ssh"
+      host        = oci_core_public_ip.Nextcloud_public_ip.ip_address
+      agent       = false
+      timeout     = "5m"
+      user        = "opc"
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
+
+    }
+  }
+
+  provisioner "file" {
+    content     = data.template_file.nginx-conf.rendered
+    destination = "/home/opc/nginx.conf"
 
     connection {
       type        = "ssh"
