@@ -14,8 +14,6 @@ variableGroups:
 - title: Nextcloud Configuration
   visible: true  
   variables:
-    - wp_admin_user
-    - wp_admin_password
     - show_advanced
 
 - title: MySQL Configuration
@@ -24,9 +22,9 @@ variableGroups:
         - show_advanced  
   variables:
     - mysql_root_password
-    - wp_db_user
-    - wp_db_password
-    - wp_schema
+    - nc_db_user
+    - nc_db_password
+    - nc_schema
 
 
 
@@ -56,7 +54,6 @@ outputGroups:
 - title: Service Endpoints
   outputs:
     - nextcloud_public_ip
-    - nextcloud_admin_url
 - title: Generated Passwords
   outputs:
     - generated_ssh_private_key
@@ -66,17 +63,13 @@ outputs:
     type: link
     title: Your Nextcloud website
     description: Open Nextcloud website
-  nextcloud_admin_url:
-    type: link
-    title: Nextcloud Login
-    description: Login to your Nextcloud installation.
   generated_ssh_private_key:
     title: "Generated SSH Private Key"
     description: "Generated SSH Private Key"
     type: copyableString
     visible: true
 
-primaryOutputButton: nextcloud_admin_url
+primaryOutputButton: nextcloud_public_ip
 
 variables:
 
@@ -98,7 +91,7 @@ variables:
     description: "Choose the password that will be set for the MySQL root superuser account."
     pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\\\"\\\\|,.<>\\/?]).{8,32}$"
 
-  wp_db_user:
+  nc_db_user:
     type: string
     required: false
     title: "Nextcloud database username"
@@ -110,7 +103,7 @@ variables:
       and:
         - show_advanced
 
-  wp_db_password:
+  nc_db_password:
     type: password
     required: false
     title: "Nextcloud database password"
@@ -120,7 +113,7 @@ variables:
       and:
         - show_advanced
 
-  wp_schema:
+  nc_schema:
     type: string
     required: false
     title: "MySQL schema to be used by Nextcloud"
@@ -128,24 +121,7 @@ variables:
     visible: 
       and:
         - show_advanced
-  
-  wp_admin_user:
-    type: string
-    required: true
-    title: "Nextcloud admin username"
-    description: "The username for the Nextcloud administrator."
-    minLength: 2
-    maxLength: 14
-    pattern: "^[a-zA-Z][a-zA-Z0-9]+$"
-    visible: true
 
-  wp_admin_password:
-    type: password
-    required: true
-    title: "Nextcloud admin password"
-    description: "The password for the Nextcloud administrator account."
-    #pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\\\"\\\\|,.<>\\/?]).{8,32}$"
-  
 # Network
   vcn:
     type: string

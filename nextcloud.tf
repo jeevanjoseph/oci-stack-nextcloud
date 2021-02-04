@@ -5,12 +5,9 @@ data "template_file" "nextcloud-docker-compose" {
   vars = {
     public_key_openssh  = tls_private_key.public_private_key_pair.public_key_openssh,
     mysql_root_password = var.mysql_root_password,
-    wp_schema           = var.wp_schema,
-    wp_db_user          = var.wp_db_user,
-    nc_db_password      = var.wp_db_password,
-    wp_site_url         = oci_core_public_ip.Nextcloud_public_ip.ip_address,
-    wp_admin_user          = var.wp_admin_user,
-    wp_admin_password      = var.wp_admin_password
+    nc_schema           = var.nc_schema,
+    nc_db_user          = var.nc_db_user,
+    nc_db_password      = var.nc_db_password
   }
 }
 

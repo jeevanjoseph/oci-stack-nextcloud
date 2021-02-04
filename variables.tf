@@ -12,7 +12,7 @@ variable "availability_domain_name" {
 ## Networking
 
 variable "vcn" {
-  default = "wpmdsvcn"
+  default = "nextcloud-vcn"
 }
 
 variable "vcn_cidr" {
@@ -55,30 +55,17 @@ variable "mysql_root_password" {
 }
 
 
-variable "wp_db_user" {
+variable "nc_db_user" {
   description = "The username that Nextcloud uses to connect to the MySQL database."
-  default     = "wp"  
+  default     = "nextcloud"  
 }
 
-variable "wp_db_password" {
+variable "nc_db_password" {
   description = "Password for Nextcloud to connect to the MySQL database."
   default     = "MyWPpassw0rd!"  
 }
 
-variable "wp_schema" {
+variable "nc_schema" {
   description = "Nextcloud MySQL Schema"
   default     = "nextcloud"  
-}
-
-# Nextcloud
-
-
-variable "wp_admin_user" {
-  description = "The username for the Nextcloud administrator."
-  default     = "admin"  
-}
-
-variable "wp_admin_password" {
-  description = "Password for the Nextcloud administrator."
-  #default     = "MyWPpassw0rd!"  
 }
